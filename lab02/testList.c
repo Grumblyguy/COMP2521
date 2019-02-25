@@ -23,6 +23,8 @@ typedef struct DLListRep {
 } DLListRep;
 
 void printstate(DLList L);
+void DLListBeforeTests(DLList L);
+void DLListDeleteTests(DLList L);
 void DLListAfterTests(DLList L);
 int main(int argc, char *argv[])
 {
@@ -40,9 +42,22 @@ int main(int argc, char *argv[])
     printf("DLListAfter tests\n");
     printf("------------------------------------------------------------------\n");
     DLListAfterTests(L);
+    printf("------------------------------------------------------------------\n\n\n");
+   
+    L = newDLList();
+    printf("DLListBefore tests\n");
     printf("------------------------------------------------------------------\n");
+    DLListBeforeTests(L);
+    printf("------------------------------------------------------------------\n\n\n");
+    
+    printf("DLListDelete tests\n");
+    printf("------------------------------------------------------------------\n");
+    DLListDeleteTests(L);
+    printf("------------------------------------------------------------------\n");
+    
 
-    // TODO: more tests needed here
+    printf("\nAll tests passed\n");
+    
 	return 0;
 }
 
@@ -54,7 +69,6 @@ void printstate(DLList L){
     printf("-----------------------------------------------\n");
 
 }
-
 void DLListAfterTests(DLList L){
     printf("This tests the function's handling of an empty list\n");
     printf("Current state: \n");
@@ -96,4 +110,95 @@ void DLListAfterTests(DLList L){
     printf("New state: \n");
     printstate(L);
     
+}
+void DLListBeforeTests(DLList L){
+    printf("This tests the function's handling of an empty list\n");
+    printf("Current state: \n");
+    printstate(L); 
+    printf("Running DLListbefore with input 'hello'\n");
+    DLListBefore(L, "hello");
+    assert(L->nitems == 1);
+    assert(strcmp("hello", L->curr->value) == 0);
+    assert(L->first == L->last);
+    assert(L->first == L->curr);
+    assert(validDLList(L));
+    printf("New state: \n");
+    printstate(L);
+    printf("\n \n");
+
+    printf("This tests the function's handling of a list with one node\n");
+    printf("Current state: \n");
+    printstate(L);
+    printf("Running DLListbefore with input 'my name is'\n");
+    DLListBefore(L, "my name is");
+    assert(L->nitems == 2);
+    assert(strcmp("my name is", L->curr->value) == 0);
+    assert(L->first == L->curr);
+    assert(validDLList(L));
+    printf("New state: \n");
+    printstate(L);
+    printf("\n \n");
+    
+    printf("This tests the function's handling of a list with more than one node\n");
+    printf("Current state: \n");
+    printstate(L);
+    printf("Running DLListbefore with input 'jas'\n");
+    DLListBefore(L, "jas");
+    assert(L->nitems == 3);
+    assert(strcmp("jas", L->curr->value) == 0);
+    assert(L->first == L->curr);
+    assert(validDLList(L));
+
+    printf("New state: \n");
+    printstate(L);
+    
+}
+
+void DLListDeleteTests(DLList L){
+    printf("This tests the function's handling of a list with more than one node\n");
+    printf("Current state: \n");
+    printstate(L);
+    printf("Running DLListDelete on current item (first)\n");
+    DLListDelete(L);
+
+    assert(L->nitems == 2);
+    assert(strcmp("my name is", L->curr->value) == 0);
+    assert(L->curr == L->first);
+    assert(validDLList(L));
+
+    printf("New state: \n");
+    printstate(L);
+    printf("\n \n");
+
+    printf("This tests the function's handling of a list with a one node result\n");
+    printf("Current state: \n");
+    printstate(L);
+    printf("Running DLListDelete on current item (first)\n");
+    DLListDelete(L);
+
+    assert(L->nitems == 1);
+    assert(strcmp("hello", L->curr->value) == 0);
+    assert(L->curr == L->first);
+    assert(validDLList(L));
+
+    printf("New state: \n");
+    printstate(L);
+    printf("\n \n");
+
+    printf("This tests the function's handling of a list deleting the last node\n");
+    printf("Current state: \n");
+    printstate(L);
+    printf("Running DLListDelete on current item (first)\n");
+    DLListDelete(L);
+
+    assert(L->nitems == 0);
+    
+    assert(L->curr == L->first);
+    assert(L->curr == NULL);
+    assert(L->curr == L->last);
+    assert(validDLList(L));
+
+    printf("New state: \n");
+    printstate(L);
+
 }
