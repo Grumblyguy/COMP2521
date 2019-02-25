@@ -65,6 +65,14 @@ void freeDLList(DLList L)
 	free(L);
 }
 
+
+static void freeDLListNode (DLListNode *node){
+    if(node == NULL) return;
+    free (node->value);
+    free(node);
+
+}
+
 // trim off \n from strings (private function)
 // this is needed for getDLList() because of fgets()
 // alternatively, we could use the evil gets() function
@@ -210,8 +218,28 @@ int DLListMoveTo(DLList L, int i)
 // new item becomes current item
 void DLListBefore(DLList L, char *it)
 {
-	assert(L != NULL); 
-	// COMPLETE THIS FUNCTION
+	assert(L != NULL);
+    DLListNode *new = newDLListNode(it); 
+
+    if(L->nitems == 0){
+        L->first = new;
+        L->curr = new;
+        L->last = new;
+    }
+    else if(L->curr == L->first){
+        new->next = L->curr;
+        new->prev = NULL;
+        L->curr->prev = new;
+        L->first = new;
+    }else{
+        L->curr->prev->next = new;
+        L->curr->prev = new;
+        new->prev = L->curr->prev;
+        new->next = L->curr;
+    }
+
+    L->curr = new;
+    L->nitems++;
 }
 
 // insert an item after current item
@@ -220,6 +248,26 @@ void DLListAfter(DLList L, char *it)
 {
 	assert(L != NULL); 
 	// COMPLETE THIS FUNCTION
+    DLListNode *new = newDLListNode(it);
+    if(L->nitems == 0){
+        L->first = new;
+        L->curr = new;
+        L->last = new;
+    }
+    else if(L->curr == L->last){
+        new->next = NULL;
+        new->prev = L->curr;
+        L->curr->next = new;
+    }else{
+        new->next = L->curr->next;
+        new->next->prev = new;
+        new->prev = L->curr;
+        L->curr->next = new;
+    }
+
+    L->curr = new;
+    L->nitems++;
+
 }
 
 // delete current item
@@ -229,6 +277,26 @@ void DLListAfter(DLList L, char *it)
 void DLListDelete(DLList L)
 {
 	assert (L != NULL);
+    DLListNode *del = L->curr;
+    if (L->nitems == 1){
+        L->curr = NULL;
+        L->first = NULL;
+        L->last = NULL;
+    }else if (L->curr == L->last){
+        L->last = L->curr->prev;
+        L->curr = L->last;
+        L->last->next = NULL;
+    }else if (L->curr == L->first){
+        L->curr = L->first->next;
+        L->first = L->first->next;
+        L->first->prev = NULL;
+    }else{
+        L->curr->prev->next = L->curr->next;
+        L->curr->next->prev = L->curr->prev;
+        L->curr = L->curr->prev->next;
+    }
+    freeDLListNode(del);
+    L->nitems--;
 	// COMPLETE THIS FUNCTION
 }
 
