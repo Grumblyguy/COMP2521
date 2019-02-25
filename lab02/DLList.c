@@ -258,6 +258,7 @@ void DLListAfter(DLList L, char *it)
         new->next = NULL;
         new->prev = L->curr;
         L->curr->next = new;
+        L->last = new;
     }else{
         new->next = L->curr->next;
         new->next->prev = new;
