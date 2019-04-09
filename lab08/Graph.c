@@ -116,7 +116,11 @@ int findPath (Graph g, Vertex src, Vertex dest, int max, int *path)
 	int pathcounter = 0;
 	int returnvalue = 0;
 	int founddest = 0;
-	
+	int visited[30] = {0};
+	visited[src] = 1;
+	int distance[1000] = {0};
+	distance[src] = 0;
+
 	//Adding all connections from source to queue
 	for (int x=0; x< g->nV; x++){
 		if (g->edges[x][src] != 0 && g->edges[x][src] <= max){
@@ -132,12 +136,26 @@ int findPath (Graph g, Vertex src, Vertex dest, int max, int *path)
 		while(!QueueIsEmpty(newQ)){
 			Vertex temp = QueueLeave(newQ);
 			
+			for (int i = 0; i < g->nV; i++){
+				if(visited[g->edges[temp][i] == 1]){
+					continue;
+				}
+				if(g->edges[i][temp] != 0 && g->edges[i][temp] <= max){
+					distance[g->edges[temp][i]] = distance[temp]+1;
+					QueueJoin(newQ, i);
+					visited[i] = 1;
+				}
+
+			
+			}
+
 			
 		}
 	}
-	if (founddest == 0){
-		returnvalue = 0;
-	}
+	//if (founddest == 0){
+	//	returnvalue = 0;
+	//}
+	print(distance[dest]);
 	dropQueue(newQ);
 	return returnvalue; // never find a path ... you need to fix this
 }
