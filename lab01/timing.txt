@@ -1,0 +1,26 @@
+Input	Initial	Has	Number	AvgTime     AvgTime
+Size	Order	  Dups	of runs	forusel	   forsort
+5000	random	no	      3	    T0.16sec	T0.05 sec
+5000	sorted	no	      3	   T0.031sec	T0.004sec
+5000	reverse	no	      3	   T0.029sec	T0.005sec
+5000	random	yes	   3	   T0.156sec	T0.008sec
+5000	sorted	yes	   3	   T0.029sec   T0.004sec
+5000	reverse	yes	   3	   T0.030sec	T0.04sec
+10000	random	no	      3	   T0.432sec	T0.012sec
+10000	sorted	no	      3	   T0.038sec	T0.07sec
+10000	reverse	no	      3	   T0.041sec	T0.008sec
+10000	random	yes	   3	   T0.452sec   T0.008sec
+10000	sorted	yes	   3	   T0.039sec	T0.007sec
+10000	reverse	yes	   3	   T0.055sec	T0.01sec
+
+just for fun
+100000 random  yes      1     T 59 sec    T0.105
+
+Our program performs much better on the reverse and sorted lists as the number
+of processes needed to find the correct node spot to insert is reduced significantly, this is due
+to the program searching from start to end in the list of numbers.
+
+Our program is obviously alot slower than the sort function, going through each linked list is quite slow and would be 
+quicker with some sort of reduction algorithm.
+ 
+

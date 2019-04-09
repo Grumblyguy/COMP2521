@@ -1,0 +1,34 @@
+Results for Tests on 5000 values
+
+Depth = depth of tree, Cost = average #comparisons per search
+
+
+             Ascending Order        Prefix Order        Random Order
+Insert
+Method       Depth      Cost     Depth      Cost     Depth      Cost
+
+Leaf          5000       3114     13         12       28         16
+
+At-Root       5000       1887     2954       1115     28         16
+
+Random        2492       952      1774       674      27         15
+
+B-Tree        206        63       20         14       23         13
+
+Splay       5000->33     24       5000       24       31         23
+
+V-AVL          13        12       14         12       15         12       
+
+
+Notes (what the above indicates):
+
+Overall, inserting in ascending order is the most costly strategy. Ascending order assumes the worst case condition and must search the whole tree before inserting it in the correct order.
+
+The AVL insert method is really efficient as compared to the other inserting methods - it has the least depth and cost. An AVL is a balanced tree as it repairs itself when the tree notices an imbalance, this it has a O(logn) cost. Comparing this method to the Splay Tree Insertion, it will have more depth and cost.The cost is relatively the same because splay tree implementations provide similar effect to periodic balance but searching will be more expensive as it needs to traverse through the tree for comparisons, hence the large numbers for depth. Splay tree searching has a worst case of O(n).
+
+The B inserting method inserts nodes to the leaves of the tree which means that it should have a relatively low depth and as this method periodically balances itself, it explains why it has a low cost.
+
+
+
+All inserting methods utilising a random order process performs efficiently. The average for random inserting time is O(log_2n).
+

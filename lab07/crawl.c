@@ -109,6 +109,7 @@ int main (int argc, char **argv)
     free(next);
     sleep (1);
     }
+	showGraph(newG,0);
     showGraph(newG,1);
     dropGraph(newG);
 	dropQueue(toDo);
