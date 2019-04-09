@@ -26,8 +26,9 @@ int main (int argc, char **argv)
 	char buffer[BUFSIZE];
 	char baseURL[BUFSIZE];
 	char firstURL[BUFSIZE];
-	char next[BUFSIZE];
+	//char next[BUFSIZE];
 	int maxURLs;
+    char *isUNSW = "unsw.edu.au";
 
 	if (argc > 2) {
 		strcpy (baseURL, argv[1]);
@@ -63,17 +64,24 @@ int main (int argc, char **argv)
 	//    close the opened URL
 	//    sleep(1)
 	// }
-	    Queue toDo = newQueue(); 
-    enterQueue(toDo, firstURL);
+    Queue toDo = newQueue();     
+    enterQueue(toDo, firstURL);  
     Graph newG = newGraph((size_t)maxURLs); 
     Set newS = newSet(); 
-    while(!emptyQueue(toDo) && nVertices(newG) < (size_t) maxURLs){ 
-        char *temp = leaveQueue(toDo); 
-        strcpy(next, temp);
+    
+    while(!emptyQueue(toDo) && nVertices(newG) < (size_t)maxURLs){ 
+        char *next = leaveQueue(toDo); 
+        
+        if (!strstr(next, isUNSW)){ 
+            free(next);
+            continue; 
+        }
+
         if (!(handle = url_fopen (next, "r"))) {
 		    fprintf (stderr, "Couldn't open %s\n", next);
 		    exit (1);
 	    }
+        
         while (!url_feof (handle)) {
             url_fgets (buffer, BUFSIZE, handle);
             //fputs(buffer,stdout);
@@ -81,14 +89,16 @@ int main (int argc, char **argv)
             char result[BUFSIZE];
             memset (result, 0, BUFSIZE);
             while ((pos = GetNextURL (buffer, next, result, pos)) > 0) {
-                // printf ("Found: '%s'\n", result);
+                printf ("Found: '%s'\n", result);
                 if(nVertices(newG) < (size_t) maxURLs || (isElem(newS, result) && isElem(newS, next))){
-                   addEdge(newG, next, result);     
+                    //printf("adding edge\n");
+                    addEdge(newG, next, result);     
                 }
                 
                 if (!isElem(newS, result)){
-                   insertInto(newS, result);
-                   enterQueue(toDo, result);
+                    //printf("Adding %s to seen\n", result);
+                    insertInto(newS, result);
+                    enterQueue(toDo, result);
                 }     
                 
                 memset (result, 0, BUFSIZE);
@@ -96,8 +106,10 @@ int main (int argc, char **argv)
         }
 
 	url_fclose(handle);
+    free(next);
     sleep (1);
     }
+    showGraph(newG,1);
     dropGraph(newG);
 	dropQueue(toDo);
     dropSet(newS); 
